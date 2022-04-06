@@ -1,4 +1,12 @@
 ##### Part 2 #####
+import os
+import json
+print(os.chdir(r'C:\Users\jared\Dev-10 Module Exercises\Python\Python Basics\Guessing Game\english-words-master'))
+
+words_dictionary = open(r'words_dictionary.json')
+dictionary_lines = words_dictionary.read().splitlines()
+print(dictionary_lines[1:3])
+words_dictionary.close()
 
 word = "Google".lower()
 listed_word = ""
@@ -9,6 +17,9 @@ for quantity in word:
     listed_word = listed_word + "_"
 
 while guesses_left > 0:
+    choice = input("do you want to play? Yes or no?")
+    if choice.lower() == "no":
+        break
     guess = input("Make a guess").lower()
     if len(guess) == 1: # The guess is a letter here
         if guess in word:
