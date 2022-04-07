@@ -1,0 +1,1 @@
+You get to guess either a letter or a word. If the letter is in the word, you will see it on the screen. If you guessed incorrectly, you lose a guess. You start with 7 guesses. Good luck! 

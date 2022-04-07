@@ -2,11 +2,29 @@ import os
 import json
 import random
 
-os.chdir(r'C:\Users\jared\Dev-10 Module Exercises\Python\Python Basics\Guessing Game\english-words-master')
+os.chdir(r'C:\Users\jared\Dev-10 Module Exercises\Python\Python Basics\Guessing Game')
 print(os.getcwd())
 
 words_dictionary = open(r'words_dictionary.json')
 dictionary_lines = words_dictionary.read().splitlines()
+
+introduction_file = open(r'Introduction.txt')
+introduction = introduction_file.read()
+
+incorrect_text_file = open(r'Incorrect_Text.txt')
+incorrect_text = incorrect_text_file.read()
+
+incorrect_word_file = open(r'Incorrect_Word.txt')
+incorrect_word = incorrect_word_file.read()
+
+loss_file = open(r'Loss.txt')
+loss_text = loss_file.read()
+
+rules_file = open(r'Rules.txt')
+rules = rules_file.read()
+
+win_file = open(r'Win.txt')
+win_text = win_file.read()
 
 word_list = []
 
@@ -32,6 +50,7 @@ guess_list = []
 def game():
 
     guesses_left = 7
+    times_played = 0
 
     global word
     global word_list
@@ -40,7 +59,13 @@ def game():
     
     while guesses_left > 0:
         try:
-            guess = (input("Make a guess").lower())
+            if times_played == 0: 
+                game_intro = input(f'{introduction}').upper()
+                print(f'{rules}')
+                times_played += 1
+                if game_intro == "N":
+                    break
+            guess = input("Make a guess").lower()
             if not guess.isalpha():
                 print("Please, enter a string.")
                 continue
@@ -57,8 +82,7 @@ def game():
                             listed_word[letter_spot] = word[letter_spot]
                     if listed_word == list(word):
                         record_dictionary['Wins'] += 1
-                        print('Hooray! You Won!')
-                        if input("would you like to play again? Y/N").upper() == "Y":
+                        if input(f'{win_text}').upper() == "Y":
                             record_dictionary['Previous Words'].append(word)
                             word_list.remove(word)
                             print(record_dictionary)
@@ -72,12 +96,12 @@ def game():
                     else:
                         print(" ".join(listed_word))
                 else:
-                    print("That letter is not in the word")
+                    print(f'{incorrect_text}')
                     guesses_left = guesses_left - 1
                     print("you have " + str(guesses_left) + " guesses left.") #show how many guesses are left
                     if guesses_left == 0:
                         record_dictionary['Losses'] += 1
-                        if input("You lost! Would you like to play again? Y/N").upper() == "Y":
+                        if input(f'{loss_text}').upper() == "Y":
                             record_dictionary['Previous Words'].append(word)
                             word_list.remove(word)
                             print(record_dictionary)
@@ -92,8 +116,7 @@ def game():
             else: # The guess is a full word here
                 if guess == word:
                     record_dictionary['Wins'] += 1
-                    print("Hooray! You Won!")
-                    if input("Would you like to play again? Y/N").upper() == "Y":
+                    if input(f'{win_text}').upper() == "Y":
                         record_dictionary['Previous Words'].append(word)
                         word_list.remove(word)
                         listed_word = ""
@@ -105,12 +128,12 @@ def game():
                     else: 
                         break
                 else:
-                    print("Incorrect")
+                    print(f'{incorrect_word}')
                     guesses_left = guesses_left - 1
                     print("you have " + str(guesses_left) + " guesses left.") #show how many guesses are left
                     if guesses_left == 0:
                         record_dictionary['Losses'] += 1
-                        if input("You lost! Would you like to play again? Y/N").upper() == "Y":
+                        if input(f'{loss_text}').upper() == "Y":
                             record_dictionary['Previous Words'].append(word)
                             word_list.remove(word)
                             listed_word = ""
@@ -123,5 +146,7 @@ def game():
                             break
         except ValueError:
             print("Input needs to be a string")
+        except:
+            print("An error has occurred")
 game()
 
